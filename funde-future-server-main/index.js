@@ -58,6 +58,15 @@ function sendInvoiceEmail(donation) {
     res.send(campaigns);
   });
 
+  // R
+  // Retrieves a specific campaign based on its ID.
+  app.get("/campaign/:id", async (req, res) => {
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) };
+    const campaign = await campaignCollection.findOne(query);
+    res.send(campaign);
+  });
+
   let transporter = nodemailer.createTransport(config);
 
   let MailGenerator = new Mailgen({
