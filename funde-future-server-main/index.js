@@ -67,6 +67,31 @@ function sendInvoiceEmail(donation) {
     res.send(campaign);
   });
 
+  // U
+  // Updates an existing campaign based on its ID.
+  app.put("/campaigns/:id", verifyJWT, async (req, res) => {
+    const id = req.params.id;
+    const filter = { _id: new ObjectId(id) };
+    const campaign = req.body;
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: {
+        title: campaign.title,
+        category: campaign.category,
+        address: campaign.address,
+        short_desc: campaign.short_desc,
+        description: campaign.description,
+        lastModified: new Date(),
+      },
+    };
+    const result = await campaignCollection.updateOne(
+      filter,
+      updateDoc,
+      options
+    );
+    res.send(result);
+  });
+
   let transporter = nodemailer.createTransport(config);
 
   let MailGenerator = new Mailgen({
