@@ -92,6 +92,15 @@ function sendInvoiceEmail(donation) {
     res.send(result);
   });
 
+  // D
+  // Deletes a specific campaign based on its ID.
+  app.delete("/campaigns/:id", verifyJWT, async (req, res) => {
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) };
+    const result = await campaignCollection.deleteOne(query);
+    res.send(result);
+  });
+
   let transporter = nodemailer.createTransport(config);
 
   let MailGenerator = new Mailgen({
